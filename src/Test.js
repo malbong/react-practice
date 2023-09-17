@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
 const Test = () => {
-  const [value, setValue] = useState('');
+  const [flag, setFlag] = useState(true);
 
-  const changeHandler = (e) => {
-    setValue(e.target.value);
+  const toggleHandler = () => {
+    setFlag(!flag);
   };
+
+  let toggleColor = flag ? 'red' : 'blue';
 
   return (
     <div>
-      <p>{value}</p>
-      <input type="text" value={value} onChange={changeHandler} />
+      <button onClick={toggleHandler}>toggle</button>
+      <div style={{ backgroundColor: toggleColor }}>BOX</div>
     </div>
   );
 };
