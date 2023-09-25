@@ -1,21 +1,21 @@
 import React from 'react';
 
-import meal from '../../assets/meals.jpg';
+import mealsImage from '../../assets/meals.jpg';
 import classes from './Header.module.css';
 
 import HeaderCartbutton from './HeaderCartButton';
 
-const Header = () => {
+const Header = (props) => {
   return (
-    <header>
-      <div className={classes.header}>
+    <React.Fragment>
+      <header className={classes.header}>
         <h1>ReactMeals</h1>
-        <HeaderCartbutton />
-      </div>
+        <HeaderCartbutton onClose={props.onClose} onOpen={props.onOpen} />
+      </header>
       <div className={classes['main-image']}>
-        <img src={meal} alt="meal" />
+        <img src={mealsImage} alt="meal" />
       </div>
-    </header>
+    </React.Fragment>
   );
 };
 

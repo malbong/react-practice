@@ -1,55 +1,40 @@
 import React, { useState, useContext, useEffect } from 'react';
 
 import classes from './HeaderCartButton.module.css';
-import CartIcon from '../../assets/CartIcon';
-import Modal from '../UI/Modal';
-import Cart from '../Cart/Cart';
+import CartIcon from '../Cart/CartIcon';
 import CartContext from '../Context/CartContext';
 
-const HeaderCartButton = () => {
+let identifier = null;
+
+const HeaderCartButton = (props) => {
   const cartCtx = useContext(CartContext);
 
-  const [isActive, setIsActive] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    setIsAnimating(true);
+  const btnClasses = `${classes.button} ${isAnimating && classes.bump}`;
 
-    setTimeout(() => {
+  const cartAmount = cartCtx.getTotalAmount();
+  useEffect(() => {
+    if (cartAmount === 0) return;
+
+    setIsAnimating(true);
+    identifier = setTimeout(() => {
       setIsAnimating(false);
     }, 300);
 
     return () => {
-      setIsAnimating(false);
+      clearTimeout(identifier);
     };
-  }, [cartCtx.meals]);
-
-  const openCartModalHandler = () => {
-    setIsActive(true);
-  };
-
-  const closeCartModalHandler = () => {
-    setIsActive(false);
-  };
+  }, [cartAmount]);
 
   return (
-    <React.Fragment>
-      {isActive && (
-        <Modal onCloseModal={closeCartModalHandler}>
-          <Cart onCloseModal={closeCartModalHandler} />
-        </Modal>
-      )}
-      <button
-        className={`${classes.button} ${isAnimating && classes.bump}`}
-        onClick={openCartModalHandler}
-      >
-        <span className={classes.icon}>
-          <CartIcon />
-        </span>
-        Your Cart
-        <span className={classes.badge}>{cartCtx.getTotalAmount()}</span>
-      </button>
-    </React.Fragment>
+    <button className={btnClasses} onClick={props.onOpen}>
+      <span className={classes.icon}>
+        <CartIcon />
+      </span>
+      <span>Your Cart</span>
+      <span className={classes.badge}>{cartCtx.getTotalAmount()}</span>
+    </button>
   );
 };
 

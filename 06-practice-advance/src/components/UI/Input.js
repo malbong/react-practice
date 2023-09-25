@@ -15,15 +15,8 @@ const Input = React.forwardRef((props, ref) => {
 
   return (
     <div className={classes.input}>
-      <label htmlFor={props.id}>{props.label}</label>
-      <input
-        ref={inputRef}
-        id={props.id}
-        type={props.type}
-        min={props.min}
-        max={props.max}
-        defaultValue={props.defaultValue}
-      />
+      <label htmlFor={props.data.id}>{props.label}</label>
+      <input ref={inputRef} {...props.data} />
     </div>
   );
 });
