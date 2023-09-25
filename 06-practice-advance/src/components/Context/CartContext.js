@@ -8,6 +8,11 @@ const initCartContext = {
     price: meal.price,
     amount: 0,
   })),
+  addMeal: (name, amount) => {},
+  plusMeal: (name) => {},
+  minusMeal: (name) => {},
+  getTotalAmount: () => {},
+  getTotalPrice: () => {},
 };
 
 const cartReducer = (state, action) => {
