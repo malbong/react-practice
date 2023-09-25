@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useRef, useImperativeHandle } from 'react';
 
 import classes from './Input.module.css';
 
-const Input = (props) => {
+const Input = React.forwardRef((props, ref) => {
+  const inputRef = useRef();
+
+  const getValue = () => {
+    return inputRef.current.value;
+  };
+
+  useImperativeHandle(ref, () => {
+    return { getValue };
+  });
+
   return (
     <div className={classes.input}>
-      <label>{props.label}</label>
-      <input type={props.type} min={props.min} value={props.value} />
+      <label htmlFor={props.id}>{props.label}</label>
+      <input
+        ref={inputRef}
+        id={props.id}
+        type={props.type}
+        min={props.min}
+        max={props.max}
+        defaultValue={props.defaultValue}
+      />
     </div>
   );
-};
+});
 
 export default Input;
