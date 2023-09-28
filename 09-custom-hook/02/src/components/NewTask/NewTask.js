@@ -14,7 +14,7 @@ const options = {
 };
 
 const NewTask = (props) => {
-  const [isLoading, error, getData] = useHttp(url, options);
+  const [isLoading, error, getData] = useHttp();
 
   const setData = async (taskText) => {
     const data = await getData(url, {
