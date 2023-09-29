@@ -40,7 +40,7 @@ const Cart = (props) => {
 
   const orderSubmitHandler = async (orderInfo) => {
     const url =
-      'https://react-post-35b9b-default-rtdb.firebaseio.com/orders.json';
+      'https://react-post-35b9b-default-rtdb.firebaseio.com/orders.jso3n';
     const options = {
       method: 'POST',
       body: JSON.stringify({
@@ -50,17 +50,18 @@ const Cart = (props) => {
           postalCode: orderInfo.postalCode,
           city: orderInfo.city,
         },
-        items: cartCtx.items.map((item) => ({ ...item })),
+        items: cartCtx.items,
       }),
       headers: {
         'Content-Type': 'application/json',
       },
     };
 
-    await orderRequest(url, options);
-
-    cartCtx.clearItems();
-    setFinishedOrder(true);
+    const data = await orderRequest(url, options);
+    if (data) {
+      cartCtx.clearItems();
+      setFinishedOrder(true);
+    }
   };
 
   const cartItems = (
@@ -106,10 +107,9 @@ const Cart = (props) => {
       {!showCheckout && actions}
     </React.Fragment>
   );
-
-  if (orderIsLoading) content = <h1>...Requesting Order...</h1>;
-  if (orderError) content = <h1>...Requesting Error...</h1>;
+  if (orderIsLoading) content = <h1>...Sending order request...</h1>;
   if (finishedOrder) content = <h1>Thank you for the order!</h1>;
+  if (orderError) content = <h1>Sorry. Request Error, try again</h1>;
 
   return <Modal onClose={props.onClose}>{content}</Modal>;
 };

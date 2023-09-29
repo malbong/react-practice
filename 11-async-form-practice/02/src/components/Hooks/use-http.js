@@ -18,6 +18,7 @@ const useHttp = () => {
       return await response.json();
     } catch (error) {
       setError(error.message);
+      return false;
     } finally {
       setIsLoading(false);
     }

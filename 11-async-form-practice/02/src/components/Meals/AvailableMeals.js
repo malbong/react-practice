@@ -40,13 +40,26 @@ const AvailableMeals = () => {
     />
   ));
 
-  let content = <ul>{mealsList}</ul>;
-  if (isLoading) content = <h1>...current Loading...</h1>;
-  else if (error) content = <h1>{error}</h1>;
+  if (isLoading) {
+    return (
+      <section className={classes.loading}>
+        <h1>Loading...</h1>
+      </section>
+    );
+  }
 
+  if (error) {
+    return (
+      <section className={classes.error}>
+        <h1>{error}</h1>
+      </section>
+    );
+  }
   return (
     <section className={classes.meals}>
-      <Card>{content}</Card>
+      <Card>
+        <ul>{mealsList}</ul>
+      </Card>
     </section>
   );
 };

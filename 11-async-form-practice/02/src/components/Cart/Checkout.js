@@ -11,10 +11,6 @@ const Checkout = (props) => {
     blurHandler: nameBlurHandler,
   } = useInput('', (value) => value.length >= 3);
 
-  const nameInputClasses = `${classes.control} ${
-    nameHasError ? classes.invalid : ''
-  }`;
-
   const {
     value: street,
     isValid: streetIsValid,
@@ -22,10 +18,6 @@ const Checkout = (props) => {
     changeHandler: streetChangeHandler,
     blurHandler: streetBlurHandler,
   } = useInput('', (value) => value.length >= 3);
-
-  const streetInputClasses = `${classes.control} ${
-    streetHasError ? classes.invalid : ''
-  }`;
 
   const {
     value: postalCode,
@@ -35,10 +27,6 @@ const Checkout = (props) => {
     blurHandler: postalCodeBlurHandler,
   } = useInput('', (value) => value.length >= 3);
 
-  const postalCodeInputClasses = `${classes.control} ${
-    postalCodeHasError ? classes.invalid : ''
-  }`;
-
   const {
     value: city,
     isValid: cityIsValid,
@@ -46,6 +34,18 @@ const Checkout = (props) => {
     changeHandler: cityChangeHandler,
     blurHandler: cityBlurHandler,
   } = useInput('', (value) => value.length >= 3);
+
+  const nameInputClasses = `${classes.control} ${
+    nameHasError ? classes.invalid : ''
+  }`;
+
+  const streetInputClasses = `${classes.control} ${
+    streetHasError ? classes.invalid : ''
+  }`;
+
+  const postalCodeInputClasses = `${classes.control} ${
+    postalCodeHasError ? classes.invalid : ''
+  }`;
 
   const cityInputClasses = `${classes.control} ${
     cityHasError ? classes.invalid : ''
