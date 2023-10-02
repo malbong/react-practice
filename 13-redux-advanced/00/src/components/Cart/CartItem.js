@@ -1,8 +1,7 @@
 import classes from './CartItem.module.css';
 
 const CartItem = (props) => {
-  const { title, quantity, total, price } = props.item;
-
+  const { id, title, price, total, quantity } = props.itemInfo;
   return (
     <li className={classes.item}>
       <header>
@@ -17,8 +16,8 @@ const CartItem = (props) => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button>-</button>
-          <button>+</button>
+          <button onClick={props.onMinus.bind(null, id)}>-</button>
+          <button onClick={props.onPlus.bind(null, id)}>+</button>
         </div>
       </div>
     </li>
