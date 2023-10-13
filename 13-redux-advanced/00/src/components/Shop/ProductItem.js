@@ -2,7 +2,12 @@ import Card from '../UI/Card';
 import classes from './ProductItem.module.css';
 
 const ProductItem = (props) => {
-  const { title, price, description } = props.item;
+  const { id, title, price, description } = props;
+
+  const addHandler = () => {
+    props.addItem({ id, title, price });
+  };
+
   return (
     <li className={classes.item}>
       <Card>
@@ -12,9 +17,7 @@ const ProductItem = (props) => {
         </header>
         <p>{description}</p>
         <div className={classes.actions}>
-          <button onClick={props.onAdd.bind(null, props.item)}>
-            Add to Cart
-          </button>
+          <button onClick={addHandler}>Add to Cart</button>
         </div>
       </Card>
     </li>

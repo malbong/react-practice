@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  show: false,
   items: [],
   totalAmount: 0,
+  show: true,
 };
 
 const cartSlice = createSlice({
@@ -14,43 +14,35 @@ const cartSlice = createSlice({
       state.show = !state.show;
     },
 
-    plus: (state, action) => {
+    addItem: (state, action) => {
       state.totalAmount++;
-      const index = state.items.findIndex((item) => action.payload === item.id);
-      state.items[index].quantity++;
-      state.items[index].total += state.items[index].price;
-    },
 
-    minus: (state, action) => {
-      state.totalAmount--;
-      const index = state.items.findIndex((item) => action.payload === item.id);
-      state.items[index].quantity--;
-      state.items[index].total -= state.items[index].price;
-
-      if (state.items[index].quantity === 0)
-        state.items = state.items.filter((item, i) => i !== index);
-    },
-    add: (state, action) => {
-      state.totalAmount++;
-      const index = state.items.findIndex(
-        (item) => action.payload.id === item.id
-      );
-
-      if (index !== -1) {
-        state.items[index].quantity++;
-        state.items[index].total += state.items[index].price;
-      } else {
-        state.items.push({
-          id: action.payload.id,
-          title: action.payload.title,
-          quantity: 1,
-          total: action.payload.price,
-          price: action.payload.price,
-        });
+      for (let i = 0; i < state.items.length; ++i) {
+        if (state.items[i].id === action.payload.id) {
+          state.items[i].quantity++;
+          return;
+        }
       }
+
+      state.items.push({
+        id: action.payload.id,
+        title: action.payload.title,
+        price: action.payload.price,
+        quantity: 1,
+      });
+    },
+
+    removeItem: (state, action) => {
+      state.totalAmount--;
+      for (let i = 0; i < state.items.length; ++i) {
+        if (state.items[i].id === action.payload.id) {
+          state.items[i].quantity--;
+        }
+      }
+      state.items = state.items.filter((item) => item.quantity !== 0);
     },
   },
 });
 
 export const cartActions = cartSlice.actions;
-export default cartSlice.reducer;
+export default cartSlice;

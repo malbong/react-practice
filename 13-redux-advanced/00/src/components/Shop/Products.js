@@ -27,22 +27,21 @@ const dummy = [
 
 const Products = (props) => {
   const dispatch = useDispatch();
-  const addHandler = (item) => {
-    dispatch(cartActions.add(item));
+
+  const addItemHandler = (info) => {
+    dispatch(cartActions.addItem(info));
   };
 
   const productItems = dummy.map((item) => {
     return (
       <ProductItem
         key={item.id}
-        onAdd={addHandler}
-        item={{
-          id: item.id,
-          price: item.price,
-          title: item.title,
-          description: item.description,
-        }}
-      />
+        id={item.id}
+        title={item.title}
+        price={item.price}
+        description={item.description}
+        addItem={addItemHandler}
+      ></ProductItem>
     );
   });
 
