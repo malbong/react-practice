@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
-import { uiActions } from './store/ui-slice';
+import { sendCartData, fetchCartData } from './store/cart-actions';
 import Notification from './components/UI/Notification';
 
 let isInitial = true;
@@ -16,53 +16,12 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(
-        uiActions.showNotification({
-          status: 'pending',
-          title: 'Sending',
-          message: 'Sending cart data..',
-        })
-      );
-      const response = await fetch(
-        'https://react-post-35b9b-default-rtdb.firebaseio.com/cart.json',
-        {
-          method: 'PUT',
-          body: JSON.stringify(cart),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Sending cart data failed.');
-      }
-
-      dispatch(
-        uiActions.showNotification({
-          status: 'success',
-          title: 'Success!',
-          message: 'Sent cart data successfully',
-        })
-      );
-    };
-
     if (isInitial) {
       isInitial = false;
+      dispatch(fetchCartData());
       return;
     }
-
-    sendCartData().catch((error) => {
-      dispatch(
-        uiActions.showNotification({
-          status: 'error',
-          title: 'Error!',
-          message: error.message,
-        })
-      );
-    });
-
-    setTimeout(() => {
-      dispatch(uiActions.showNotification(null));
-    }, 2000);
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
@@ -83,3 +42,8 @@ function App() {
 }
 
 export default App;
+
+// 아직 당연히 모르고 당연히 처음부터 작성하면 못해
+// 엄청 걱정했을 것 같아
+// 기술 혹은 툴이 너무 많더라고
+// 사용법만 알면 되고
