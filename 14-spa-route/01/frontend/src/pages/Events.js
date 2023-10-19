@@ -1,24 +1,34 @@
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Suspense } from 'react';
+import { useLoaderData, json, defer, Await } from 'react-router-dom';
+import EventsList from '../components/EventsList';
 
-const DUMMY_EVENTS = [
-  { id: 'e1', title: 'Event1' },
-  { id: 'e2', title: 'Event2' },
-  { id: 'e3', title: 'Event3' },
-];
+function EventsPage() {
+  const { data } = useLoaderData();
 
-const EventsPage = () => {
   return (
-    <Fragment>
-      <h1>Events</h1>
-      <ul>
-        {DUMMY_EVENTS.map((event) => (
-          <li key={event.id}>
-            <Link to={event.id}>{event.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </Fragment>
+    <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+      <Await resolve={data}>
+        {(data) => <EventsList events={data.events} />}
+      </Await>
+    </Suspense>
   );
-};
+}
+
 export default EventsPage;
+
+const loadEvents = async () => {
+  const response = await fetch('http://localhost:8080/events');
+
+  if (!response.ok) {
+    throw json('Could not fetch events', { status: 500 });
+  } else {
+    const resData = await response.json();
+    return resData;
+  }
+};
+
+export const loader = () => {
+  return defer({
+    data: loadEvents(),
+  });
+};
